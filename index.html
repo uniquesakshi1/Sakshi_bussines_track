@@ -1,0 +1,1621 @@
+```html
+<!DOCTYPE html>
+<html lang="hi" class="h-full bg-slate-900 text-slate-100">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sakshi Studio - Enterprise & Daily Business Suite</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Google Font (Inter) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            800: '#166534',
+                            900: '#14532d',
+                        },
+                        accent: {
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                        },
+                        insta: {
+                            500: '#e1306c',
+                            600: '#c13584',
+                            700: '#833ab4',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom scrollbars */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+        .glass { background: rgba(30, 41, 59, 0.75); backdrop-filter: blur(12px); }
+    </style>
+</head>
+<body class="h-full flex flex-col md:flex-row overflow-hidden font-sans bg-slate-950 text-slate-100">
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="fixed top-4 right-4 z-50 flex flex-col gap-2 max-w-sm"></div>
+
+    <!-- Mobile Header -->
+    <div class="md:hidden flex items-center justify-between p-4 bg-slate-900 border-b border-slate-800 z-20">
+        <div class="flex items-center gap-2">
+            <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-brand-500 via-accent-500 to-insta-500 flex items-center justify-center font-bold text-slate-950">SS</div>
+            <span class="font-bold text-lg text-white">Sakshi Studio</span>
+        </div>
+        <button id="mobile-menu-btn" class="p-2 rounded-lg bg-slate-800 text-slate-300 hover:text-white">
+            <i data-lucide="menu" class="w-6 h-6"></i>
+        </button>
+    </div>
+
+    <!-- Sidebar Navigation -->
+    <aside id="sidebar" class="fixed md:relative inset-y-0 left-0 w-64 bg-slate-900 border-r border-slate-800 flex flex-col z-30 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out">
+        <!-- Logo & Branding -->
+        <div class="p-5 border-b border-slate-800 flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-500 via-accent-500 to-insta-500 flex items-center justify-center font-bold text-slate-950 text-xl shadow-lg shadow-brand-500/20">
+                SS
+            </div>
+            <div>
+                <h1 class="font-bold text-white leading-tight">Sakshi Studio</h1>
+                <p class="text-xs text-brand-500 font-medium">Business & Growth Hub</p>
+            </div>
+        </div>
+
+        <!-- Navigation Links -->
+        <nav class="flex-1 p-3 space-y-1 overflow-y-auto text-xs font-medium">
+            <button onclick="switchTab('dashboard')" class="nav-btn active w-full flex items-center gap-2.5 px-3 py-2 rounded-lg transition-all text-slate-300 hover:bg-slate-800 hover:text-white" data-tab="dashboard">
+                <i data-lucide="layout-dashboard" class="w-4 h-4 text-brand-400"></i> Unified Daily Hub
+            </button>
+            <button onclick="switchTab('timetable')" class="nav-btn w-full flex items-center gap-2.5 px-3 py-2 rounded-lg transition-all text-slate-300 hover:bg-slate-800 hover:text-white" data-tab="timetable">
+                <i data-lucide="clock" class="w-4 h-4 text-amber-400"></i> Personal Timetable
+            </button>
+            <button onclick="switchTab('todo')" class="nav-btn w-full flex items-center gap-2.5 px-3 py-2 rounded-lg transition-all text-slate-300 hover:bg-slate-800 hover:text-white" data-tab="todo">
+                <i data-lucide="check-square" class="w-4 h-4 text-emerald-400"></i> Daily To-Do List
+            </button>
+            <button onclick="switchTab('insta-growth')" class="nav-btn w-full flex items-center gap-2.5 px-3 py-2 rounded-lg transition-all text-slate-300 hover:bg-slate-800 hover:text-white" data-tab="insta-growth">
+                <i data-lucide="instagram" class="w-4 h-4 text-insta-500"></i> Instagram Insights
+            </button>
+            <button onclick="switchTab('insta-calendar')" class="nav-btn w-full flex items-center gap-2.5 px-3 py-2 rounded-lg transition-all text-slate-300 hover:bg-slate-800 hover:text-white" data-tab="insta-calendar">
+                <i data-lucide="film" class="w-4 h-4 text-purple-400"></i> Insta Content Plan
+            </button>
+            <button onclick="switchTab('insta-strategy')" class="nav-btn w-full flex items-center gap-2.5 px-3 py-2 rounded-lg transition-all text-slate-300 hover:bg-slate-800 hover:text-white" data-tab="insta-strategy">
+                <i data-lucide="zap" class="w-4 h-4 text-yellow-400"></i> Organic Growth Strategy
+            </button>
+            <button onclick="switchTab('plan365')" class="nav-btn w-full flex items-center gap-2.5 px-3 py-2 rounded-lg transition-all text-slate-300 hover:bg-slate-800 hover:text-white" data-tab="plan365">
+                <i data-lucide="calendar-range" class="w-4 h-4 text-sky-400"></i> 365-Day Business Plan
+            </button>
+            <button onclick="switchTab('customers')" class="nav-btn w-full flex items-center gap-2.5 px-3 py-2 rounded-lg transition-all text-slate-300 hover:bg-slate-800 hover:text-white" data-tab="customers">
+                <i data-lucide="users" class="w-4 h-4 text-blue-400"></i> Customers Directory
+            </button>
+            <button onclick="switchTab('leads')" class="nav-btn w-full flex items-center gap-2.5 px-3 py-2 rounded-lg transition-all text-slate-300 hover:bg-slate-800 hover:text-white" data-tab="leads">
+                <i data-lucide="filter" class="w-4 h-4 text-indigo-400"></i> Leads & Pipeline
+            </button>
+            <button onclick="switchTab('projects')" class="nav-btn w-full flex items-center gap-2.5 px-3 py-2 rounded-lg transition-all text-slate-300 hover:bg-slate-800 hover:text-white" data-tab="projects">
+                <i data-lucide="briefcase" class="w-4 h-4 text-teal-400"></i> PF & Dev Projects
+            </button>
+            <button onclick="switchTab('finance')" class="nav-btn w-full flex items-center gap-2.5 px-3 py-2 rounded-lg transition-all text-slate-300 hover:bg-slate-800 hover:text-white" data-tab="finance">
+                <i data-lucide="indian-rupee" class="w-4 h-4 text-emerald-500"></i> Finance & Profit
+            </button>
+            <button onclick="switchTab('reviews')" class="nav-btn w-full flex items-center gap-2.5 px-3 py-2 rounded-lg transition-all text-slate-300 hover:bg-slate-800 hover:text-white" data-tab="reviews">
+                <i data-lucide="bar-chart-2" class="w-4 h-4 text-rose-400"></i> Reviews & Reports
+            </button>
+            <button onclick="switchTab('tracker')" class="nav-btn w-full flex items-center gap-2.5 px-3 py-2 rounded-lg transition-all text-slate-300 hover:bg-slate-800 hover:text-white" data-tab="tracker">
+                <i data-lucide="target" class="w-4 h-4 text-cyan-400"></i> Consistency Tracker
+            </button>
+            <button onclick="switchTab('settings')" class="nav-btn w-full flex items-center gap-2.5 px-3 py-2 rounded-lg transition-all text-slate-300 hover:bg-slate-800 hover:text-white" data-tab="settings">
+                <i data-lucide="settings" class="w-4 h-4 text-slate-400"></i> Backup & Data
+            </button>
+        </nav>
+
+        <!-- Quick Info Footer -->
+        <div class="p-4 border-t border-slate-800 text-xs text-slate-400">
+            <div class="flex items-center justify-between mb-1">
+                <span>Database:</span>
+                <span class="text-brand-500 font-semibold">Self-Contained Local</span>
+            </div>
+            <p>© 2026 Sakshi Studio Platform</p>
+        </div>
+    </aside>
+
+    <!-- Sidebar Overlay for Mobile -->
+    <div id="sidebar-overlay" class="fixed inset-0 bg-slate-950/80 z-20 hidden md:hidden"></div>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 overflow-y-auto p-4 md:p-8 space-y-6">
+
+        <!-- 1. UNIFIED DAILY DASHBOARD (LANDING) -->
+        <section id="tab-dashboard" class="tab-content space-y-6">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-slate-900 border border-slate-800 p-6 rounded-2xl">
+                <div>
+                    <div class="flex items-center gap-2 text-brand-400 text-xs font-semibold uppercase tracking-wider mb-1">
+                        <i data-lucide="calendar" class="w-4 h-4"></i>
+                        <span id="dash-today-date">--</span>
+                    </div>
+                    <h2 class="text-2xl md:text-3xl font-extrabold text-white">नमस्ते, साक्षी स्टूडियो डैशबोर्ड</h2>
+                    <p class="text-slate-400 text-sm mt-1">आज का सम्पूर्ण बिज़नेस, पर्सनल रूटीन और मार्केटिंग एक्शन सेंटर</p>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button onclick="openModal('quick-entry-modal')" class="bg-brand-600 hover:bg-brand-500 text-white px-4 py-2.5 rounded-xl text-sm font-semibold flex items-center gap-2 shadow-lg shadow-brand-600/20 transition">
+                        <i data-lucide="plus-circle" class="w-4 h-4"></i> त्वरित एंट्री (Quick Add)
+                    </button>
+                </div>
+            </div>
+
+            <!-- Daily Summary Key Metric Cards -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="bg-slate-900 border border-slate-800 rounded-xl p-4">
+                    <p class="text-xs font-semibold text-slate-400">आज का To-Do स्कोर</p>
+                    <div class="flex justify-between items-end mt-2">
+                        <h3 id="dash-todo-percent" class="text-2xl font-bold text-emerald-400">0%</h3>
+                        <span id="dash-todo-counts" class="text-xs text-slate-400">0/0 पूर्ण</span>
+                    </div>
+                    <div class="w-full bg-slate-800 h-1.5 rounded-full mt-2 overflow-hidden">
+                        <div id="dash-todo-bar" class="bg-emerald-500 h-full w-0 transition-all duration-300"></div>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900 border border-slate-800 rounded-xl p-4">
+                    <p class="text-xs font-semibold text-slate-400">पर्सनल रूटीन प्रगति</p>
+                    <div class="flex justify-between items-end mt-2">
+                        <h3 id="dash-routine-percent" class="text-2xl font-bold text-amber-400">0%</h3>
+                        <span id="dash-routine-counts" class="text-xs text-slate-400">0/0 पूर्ण</span>
+                    </div>
+                    <div class="w-full bg-slate-800 h-1.5 rounded-full mt-2 overflow-hidden">
+                        <div id="dash-routine-bar" class="bg-amber-500 h-full w-0 transition-all duration-300"></div>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900 border border-slate-800 rounded-xl p-4">
+                    <p class="text-xs font-semibold text-slate-400">इंस्टाग्राम फॉलोअर्स</p>
+                    <div class="flex justify-between items-end mt-2">
+                        <h3 id="dash-insta-followers" class="text-2xl font-bold text-insta-500">0</h3>
+                        <span id="dash-insta-reach" class="text-xs text-emerald-400">+0 Reach</span>
+                    </div>
+                    <p class="text-[11px] text-slate-500 mt-2">वास्तविक अंतर्दृष्टि डेटा</p>
+                </div>
+
+                <div class="bg-slate-900 border border-slate-800 rounded-xl p-4">
+                    <p class="text-xs font-semibold text-slate-400">कुल आय (Total Revenue)</p>
+                    <div class="flex justify-between items-end mt-2">
+                        <h3 id="dash-revenue" class="text-2xl font-bold text-white">₹0</h3>
+                        <span id="dash-net-profit" class="text-xs text-brand-400">Net: ₹0</span>
+                    </div>
+                    <p class="text-[11px] text-slate-500 mt-2">सक्रिय प्रोजेक्ट्स: <span id="dash-active-projects">0</span></p>
+                </div>
+            </div>
+
+            <!-- Top Priorities & Today's Schedule -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Top 3 Priorities -->
+                <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-4">
+                    <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                        <h3 class="font-bold text-white text-base flex items-center gap-2">
+                            <i data-lucide="alert-circle" class="w-5 h-5 text-rose-500"></i> आज की शीर्ष 3 प्राथमिकताएं (Top 3)
+                        </h3>
+                        <button onclick="switchTab('todo')" class="text-xs text-brand-400 hover:underline">To-Do देखें</button>
+                    </div>
+                    <div id="dash-top-priorities-list" class="space-y-2.5"></div>
+                </div>
+
+                <!-- Timetable Quick View -->
+                <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-4">
+                    <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                        <h3 class="font-bold text-white text-base flex items-center gap-2">
+                            <i data-lucide="clock" class="w-5 h-5 text-amber-500"></i> आज का टाइमटेबल (Routine)
+                        </h3>
+                        <button onclick="switchTab('timetable')" class="text-xs text-brand-400 hover:underline">पूरा टाइमटेबल</button>
+                    </div>
+                    <div id="dash-timetable-list" class="space-y-2.5 max-h-64 overflow-y-auto pr-1"></div>
+                </div>
+
+                <!-- Today's Instagram Content & Followups -->
+                <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-4">
+                    <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                        <h3 class="font-bold text-white text-base flex items-center gap-2">
+                            <i data-lucide="instagram" class="w-5 h-5 text-insta-500"></i> आज की पोस्ट & फॉलोअप्स
+                        </h3>
+                        <button onclick="switchTab('insta-calendar')" class="text-xs text-brand-400 hover:underline">कैलेंडर</button>
+                    </div>
+                    <div id="dash-today-insta-content" class="bg-slate-950 p-3 rounded-lg border border-slate-800 space-y-1 text-xs">
+                        <!-- Loaded dynamically -->
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-xs text-slate-400 uppercase tracking-wider mb-2">ग्राहक फॉलोअप्स (Leads)</h4>
+                        <div id="dash-followups-list" class="space-y-2 max-h-36 overflow-y-auto"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Business Tasks Categorized Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- PF Tasks -->
+                <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 space-y-3">
+                    <h4 class="font-bold text-sm text-teal-400 flex items-center justify-between">
+                        <span><i data-lucide="file-text" class="w-4 h-4 inline mr-1"></i> PF सर्विस टास्क</span>
+                        <span id="dash-pf-count" class="text-xs bg-slate-800 text-slate-300 px-2 py-0.5 rounded">0</span>
+                    </h4>
+                    <div id="dash-pf-list" class="space-y-2 text-xs"></div>
+                </div>
+
+                <!-- Web/App Dev Tasks -->
+                <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 space-y-3">
+                    <h4 class="font-bold text-sm text-sky-400 flex items-center justify-between">
+                        <span><i data-lucide="code" class="w-4 h-4 inline mr-1"></i> वेब/एप डेवलपमेंट</span>
+                        <span id="dash-dev-count" class="text-xs bg-slate-800 text-slate-300 px-2 py-0.5 rounded">0</span>
+                    </h4>
+                    <div id="dash-dev-list" class="space-y-2 text-xs"></div>
+                </div>
+
+                <!-- Marketing & Other Tasks -->
+                <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 space-y-3">
+                    <h4 class="font-bold text-sm text-purple-400 flex items-center justify-between">
+                        <span><i data-lucide="megaphone" class="w-4 h-4 inline mr-1"></i> मार्केटिंग कार्य</span>
+                        <span id="dash-mkt-count" class="text-xs bg-slate-800 text-slate-300 px-2 py-0.5 rounded">0</span>
+                    </h4>
+                    <div id="dash-mkt-list" class="space-y-2 text-xs"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. PERSONAL DAILY TIMETABLE TAB -->
+        <section id="tab-timetable" class="tab-content hidden space-y-6">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div>
+                    <h2 class="text-2xl font-bold text-white">व्यक्तिगत दैनिक टाइमटेबल (Personal Timetable)</h2>
+                    <p class="text-slate-400 text-sm">सुबह 7:00 बजे से लेकर रात तक का फ्लेक्सिबल शेड्यूल</p>
+                </div>
+                <button onclick="openTimetableModal()" class="bg-brand-600 hover:bg-brand-500 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2">
+                    <i data-lucide="plus" class="w-4 h-4"></i> नया टाइम स्लॉट जोड़ें
+                </button>
+            </div>
+
+            <!-- Timetable Filter/Category Pills -->
+            <div class="flex flex-wrap gap-2">
+                <span class="text-xs bg-slate-800 text-slate-300 px-3 py-1.5 rounded-lg border border-slate-700">सुबह रूटीन: 7:00 AM Wakeup</span>
+                <span class="text-xs bg-slate-800 text-slate-300 px-3 py-1.5 rounded-lg border border-slate-700">घर व खाना: ~10:00 AM तक</span>
+                <span class="text-xs bg-slate-800 text-slate-300 px-3 py-1.5 rounded-lg border border-slate-700">बेबी केयर & फैमिली फ्लेक्सिबल</span>
+                <span class="text-xs bg-brand-500/10 text-brand-400 px-3 py-1.5 rounded-lg border border-brand-500/20 font-semibold">मुख्य बिज़नेस टाइम: 10:00 AM से</span>
+            </div>
+
+            <!-- Timetable List Table/Cards -->
+            <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm text-slate-300">
+                        <thead class="bg-slate-800 text-xs uppercase text-slate-400 font-semibold">
+                            <tr>
+                                <th class="p-4">समय (Time)</th>
+                                <th class="p-4">गतिविधि (Activity)</th>
+                                <th class="p-4">श्रेणी (Category)</th>
+                                <th class="p-4">प्राथमिकता</th>
+                                <th class="p-4">नोट्स</th>
+                                <th class="p-4 text-center">स्थिति</th>
+                                <th class="p-4 text-right">कार्रवाई</th>
+                            </tr>
+                        </thead>
+                        <tbody id="timetable-table-body" class="divide-y divide-slate-800"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. DAILY TO-DO LIST TAB -->
+        <section id="tab-todo" class="tab-content hidden space-y-6">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div>
+                    <h2 class="text-2xl font-bold text-white">दैनिक To-Do लिस्ट (Interactive Task List)</h2>
+                    <p class="text-slate-400 text-sm">आज के सभी कार्यों का प्रबंधन और auto-calculated प्रोग्रेस</p>
+                </div>
+                <button onclick="openTodoModal()" class="bg-brand-600 hover:bg-brand-500 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2">
+                    <i data-lucide="plus" class="w-4 h-4"></i> नया टास्क जोड़ें
+                </button>
+            </div>
+
+            <!-- Filter Pills -->
+            <div class="flex flex-wrap gap-2 border-b border-slate-800 pb-4">
+                <button onclick="filterTodo('today')" class="todo-filter-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-brand-600 text-white" data-filter="today">आज के कार्य (Today)</button>
+                <button onclick="filterTodo('pending')" class="todo-filter-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300 hover:bg-slate-700" data-filter="pending">लंबित (Pending)</button>
+                <button onclick="filterTodo('overdue')" class="todo-filter-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300 hover:bg-slate-700" data-filter="overdue">अतिदेय (Overdue)</button>
+                <button onclick="filterTodo('tomorrow')" class="todo-filter-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300 hover:bg-slate-700" data-filter="tomorrow">कल के (Tomorrow)</button>
+                <button onclick="filterTodo('completed')" class="todo-filter-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300 hover:bg-slate-700" data-filter="completed">पूर्ण (Completed)</button>
+            </div>
+
+            <!-- To-Do Cards Grid -->
+            <div id="todo-cards-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+        </section>
+
+        <!-- 4. INSTAGRAM GROWTH MANAGEMENT TAB -->
+        <section id="tab-insta-growth" class="tab-content hidden space-y-6">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div>
+                    <h2 class="text-2xl font-bold text-white flex items-center gap-2">
+                        <i data-lucide="instagram" class="w-6 h-6 text-insta-500"></i> इंस्टाग्राम ग्रोथ डैशबोर्ड (Actual Insights)
+                    </h2>
+                    <p class="text-slate-400 text-sm">वास्तविक Instagram Analytics दर्ज करें और ग्रोथ ट्रैक करें</p>
+                </div>
+                <button onclick="openInstaLogModal()" class="bg-insta-600 hover:bg-insta-500 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 shadow-lg shadow-insta-600/20">
+                    <i data-lucide="edit-3" class="w-4 h-4"></i> आज के Insights दर्ज करें
+                </button>
+            </div>
+
+            <!-- Insta Metrics Stats -->
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+                <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl">
+                    <p class="text-xs text-slate-400">कुल फॉलोअर्स</p>
+                    <h3 id="ig-followers" class="text-2xl font-bold text-white mt-1">0</h3>
+                    <p id="ig-followers-diff" class="text-[11px] text-emerald-400 mt-1">+0 इस सप्ताह</p>
+                </div>
+                <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl">
+                    <p class="text-xs text-slate-400">Total Reach</p>
+                    <h3 id="ig-reach" class="text-2xl font-bold text-purple-400 mt-1">0</h3>
+                    <p class="text-[11px] text-slate-500 mt-1">Accounts Reached</p>
+                </div>
+                <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl">
+                    <p class="text-xs text-slate-400">रिल्स व्यूज (Reel Views)</p>
+                    <h3 id="ig-reel-views" class="text-2xl font-bold text-sky-400 mt-1">0</h3>
+                    <p class="text-[11px] text-slate-500 mt-1">वीडियो इम्प्रेशन्स</p>
+                </div>
+                <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl">
+                    <p class="text-xs text-slate-400">WhatsApp Clicks</p>
+                    <h3 id="ig-wa-clicks" class="text-2xl font-bold text-emerald-400 mt-1">0</h3>
+                    <p class="text-[11px] text-slate-500 mt-1">डायरेक्ट लीड लिंक्स</p>
+                </div>
+                <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl">
+                    <p class="text-xs text-slate-400">कन्वर्ट हुए कस्टमर्स</p>
+                    <h3 id="ig-conversions" class="text-2xl font-bold text-amber-400 mt-1">0</h3>
+                    <p class="text-[11px] text-slate-500 mt-1">इंस्टा सेल्स</p>
+                </div>
+            </div>
+
+            <!-- Secondary Analytics Row -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                <div class="bg-slate-900 border border-slate-800 p-3.5 rounded-lg text-xs">
+                    <span class="text-slate-400">Profile Visits:</span>
+                    <strong id="ig-profile-visits" class="text-white ml-2">0</strong>
+                </div>
+                <div class="bg-slate-900 border border-slate-800 p-3.5 rounded-lg text-xs">
+                    <span class="text-slate-400">Likes & Comments:</span>
+                    <strong id="ig-engagement" class="text-white ml-2">0</strong>
+                </div>
+                <div class="bg-slate-900 border border-slate-800 p-3.5 rounded-lg text-xs">
+                    <span class="text-slate-400">Shares & Saves:</span>
+                    <strong id="ig-saves-shares" class="text-white ml-2">0</strong>
+                </div>
+                <div class="bg-slate-900 border border-slate-800 p-3.5 rounded-lg text-xs">
+                    <span class="text-slate-400">Story Views:</span>
+                    <strong id="ig-story-views" class="text-white ml-2">0</strong>
+                </div>
+            </div>
+
+            <!-- Growth Chart & Log History -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="lg:col-span-2 bg-slate-900 border border-slate-800 rounded-xl p-5">
+                    <h3 class="font-bold text-white mb-4">फॉलोअर्स और रीच ट्रेंड (Growth Trend Chart)</h3>
+                    <div class="h-64 relative">
+                        <canvas id="chart-insta-growth"></canvas>
+                    </div>
+                </div>
+                <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-3">
+                    <h3 class="font-bold text-white text-sm">हाल की Insights हिस्ट्री</h3>
+                    <div id="insta-log-history" class="space-y-2.5 max-h-64 overflow-y-auto text-xs"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. INSTAGRAM CONTENT GROWTH PLAN TAB -->
+        <section id="tab-insta-calendar" class="tab-content hidden space-y-6">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div>
+                    <h2 class="text-2xl font-bold text-white">365-Day Instagram Content Plan</h2>
+                    <p class="text-slate-400 text-sm">12 मुख्य कैटेगिरी में तैयार स्क्रिप्ट, हुक, हैशटैग व शेड्यूल</p>
+                </div>
+                <button onclick="openContentPostModal()" class="bg-insta-600 hover:bg-insta-500 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2">
+                    <i data-lucide="plus" class="w-4 h-4"></i> पोस्ट/रिल स्क्रिप्ट जोड़ें
+                </button>
+            </div>
+
+            <!-- Content Category Pills -->
+            <div class="flex flex-wrap gap-2 text-xs">
+                <button onclick="filterContentCat('all')" class="content-cat-btn px-3 py-1.5 rounded-lg bg-brand-600 text-white font-semibold">सभी कैटेगिरी</button>
+                <button onclick="filterContentCat('PF Services')" class="content-cat-btn px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300">PF Services</button>
+                <button onclick="filterContentCat('Website Development')" class="content-cat-btn px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300">Website Dev</button>
+                <button onclick="filterContentCat('App Development')" class="content-cat-btn px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300">App Dev</button>
+                <button onclick="filterContentCat('Video Editing')" class="content-cat-btn px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300">Video Editing</button>
+                <button onclick="filterContentCat('AI Tools')" class="content-cat-btn px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300">AI Tools</button>
+                <button onclick="filterContentCat('Business Tips')" class="content-cat-btn px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300">Business Tips</button>
+            </div>
+
+            <!-- Content Grid Cards -->
+            <div id="insta-content-cards-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+        </section>
+
+        <!-- 6. INSTAGRAM FOLLOWER GROWTH STRATEGY TAB -->
+        <section id="tab-insta-strategy" class="tab-content hidden space-y-6">
+            <div>
+                <h2 class="text-2xl font-bold text-white">100% आर्गेनिक इंस्टा फॉलोअर रणनीति (Organic Strategy)</h2>
+                <p class="text-slate-400 text-sm">प्रोफाइल ऑप्टिमाइज़ेशन, हैशटैग, ट्रेंडिंग ऑडियो एवं दैनिक सहभागिता नियम</p>
+            </div>
+
+            <!-- Strategy Blueprint Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Profile & SEO -->
+                <div class="bg-slate-900 border border-slate-800 p-5 rounded-xl space-y-3">
+                    <h3 class="font-bold text-brand-400 text-base flex items-center gap-2">
+                        <i data-lucide="user-check" class="w-5 h-5"></i> SEO प्रोफाइल ऑप्टिमाइज़ेशन
+                    </h3>
+                    <ul class="text-xs text-slate-300 space-y-2 list-disc pl-4">
+                        <li><strong>Name Field:</strong> साक्षी स्टूडियो | PF & Software Solutions</li>
+                        <li><strong>Keywords:</strong> PF Consultant, App Developer, Video Editor</li>
+                        <li><strong>Clear Bio CTA:</strong> "PF समस्या या बिजनेस ऐप के लिए DM / WhatsApp करें 👇"</li>
+                        <li><strong>Highlight Covers:</strong> PF Proofs, Client Reviews, Studio Work, AI Tools</li>
+                    </ul>
+                </div>
+
+                <!-- Daily Organic Engagement -->
+                <div class="bg-slate-900 border border-slate-800 p-5 rounded-xl space-y-3">
+                    <h3 class="font-bold text-amber-400 text-base flex items-center gap-2">
+                        <i data-lucide="check-circle-2" class="w-5 h-5"></i> दैनिक 20-मिनट सहभागिता नियम
+                    </h3>
+                    <div id="daily-engagement-checklist" class="space-y-2 text-xs">
+                        <label class="flex items-center gap-2 bg-slate-800 p-2 rounded">
+                            <input type="checkbox" onchange="toggleEngageCheck(this)" class="rounded text-brand-500">
+                            <span>5 संबंधित अकाउंट्स की नई रिल्स पर वैल्युएबल कमेंट्स</span>
+                        </label>
+                        <label class="flex items-center gap-2 bg-slate-800 p-2 rounded">
+                            <input type="checkbox" onchange="toggleEngageCheck(this)" class="rounded text-brand-500">
+                            <span>Story Polls / Questions स्टिकर का प्रयोग (कम से कम 2 रोजाना)</span>
+                        </label>
+                        <label class="flex items-center gap-2 bg-slate-800 p-2 rounded">
+                            <input type="checkbox" onchange="toggleEngageCheck(this)" class="rounded text-brand-500">
+                            <span>DMs में आए प्रश्नों का तुरंत वॉयस नोट द्वारा समाधान</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Non-negotiable Rules -->
+                <div class="bg-slate-900 border border-slate-800 p-5 rounded-xl space-y-3">
+                    <h3 class="font-bold text-rose-400 text-base flex items-center gap-2">
+                        <i data-lucide="shield-alert" class="w-5 h-5"></i> सख्त नियम (Strict Guardrails)
+                    </h3>
+                    <ul class="text-xs text-slate-300 space-y-2 list-disc pl-4">
+                        <li>🚫 <strong>कोई Fake Followers/Bots नहीं:</strong> इनसे रीच स्थायी रूप से डेड हो जाती है।</li>
+                        <li>🚫 <strong>Follow-Unfollow गेम नहीं:</strong> अकाउंट शैडोबैन होने का खतरा रहता है।</li>
+                        <li>✅ केवल शुद्ध ऑर्गेनिक कंटेंट, वैल्युएबल रिल्स एवं कंसिस्टेंट पोस्टिंग।</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 7. REVIEWS & REPORTS TAB -->
+        <section id="tab-reviews" class="tab-content hidden space-y-6">
+            <div>
+                <h2 class="text-2xl font-bold text-white">साप्ताहिक एवं मासिक समीक्षा (Weekly & Monthly Reviews)</h2>
+                <p class="text-slate-400 text-sm">प्रत्येक रविवार और महीने के अंत में बिज़नेस एवं सोशल मीडिया समीक्षा</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Sunday Review Checklist -->
+                <div class="bg-slate-900 border border-slate-800 p-6 rounded-xl space-y-4">
+                    <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                        <i data-lucide="calendar" class="w-5 h-5 text-brand-500"></i> साप्ताहिक रविवार समीक्षा (Sunday Routine)
+                    </h3>
+                    <div class="space-y-2 text-xs text-slate-300">
+                        <label class="flex items-center gap-2 bg-slate-800 p-2.5 rounded-lg">
+                            <input type="checkbox" class="rounded text-brand-500">
+                            <span>सप्ताह के पूर्ण और लंबित कार्यों का पुनरावलोकन</span>
+                        </label>
+                        <label class="flex items-center gap-2 bg-slate-800 p-2.5 rounded-lg">
+                            <input type="checkbox" class="rounded text-brand-500">
+                            <span>इंस्टाग्राम नए फॉलोअर्स एवं लीड्स रूपांतरण चेक करें</span>
+                        </label>
+                        <label class="flex items-center gap-2 bg-slate-800 p-2.5 rounded-lg">
+                            <input type="checkbox" class="rounded text-brand-500">
+                            <span>अगले सप्ताह के 7 दिनों की इंस्टाग्राम पोस्ट्स की प्लानिंग</span>
+                        </label>
+                        <label class="flex items-center gap-2 bg-slate-800 p-2.5 rounded-lg">
+                            <input type="checkbox" class="rounded text-brand-500">
+                            <span>साप्ताहिक आय-व्यय व प्रॉफिट मार्जिन फाइनल करें</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Monthly Strategy Review -->
+                <div class="bg-slate-900 border border-slate-800 p-6 rounded-xl space-y-4">
+                    <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                        <i data-lucide="pie-chart" class="w-5 h-5 text-accent-500"></i> मासिक ग्रोथ ऑडिट (Month-End Audit)
+                    </h3>
+                    <div class="space-y-2 text-xs text-slate-300">
+                        <label class="flex items-center gap-2 bg-slate-800 p-2.5 rounded-lg">
+                            <input type="checkbox" class="rounded text-brand-500">
+                            <span>कुल फॉलोअर वृद्धि व रीच बनाम लक्ष्य का विश्लेषण</span>
+                        </label>
+                        <label class="flex items-center gap-2 bg-slate-800 p-2.5 rounded-lg">
+                            <input type="checkbox" class="rounded text-brand-500">
+                            <span>टॉप 3 सबसे सफल रिल्स/पोस्ट्स की पहचान और री-कंटेंट प्लानिंग</span>
+                        </label>
+                        <label class="flex items-center gap-2 bg-slate-800 p-2.5 rounded-lg">
+                            <input type="checkbox" class="rounded text-brand-500">
+                            <span>मासिक शुद्ध लाभ (Net Profit) एवं ROI की गणना</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 8. CONSISTENCY & PROGRESS TRACKER TAB -->
+        <section id="tab-tracker" class="tab-content hidden space-y-6">
+            <div>
+                <h2 class="text-2xl font-bold text-white">व्यक्तिगत प्रगति व निरंतरता ट्रैकर (Consistency Tracker)</h2>
+                <p class="text-slate-400 text-sm">दैनिक आदतें, बिजनेस लक्ष्य और पोस्टिंग निरंतरता</p>
+            </div>
+
+            <!-- Consistency Streaks -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="bg-slate-900 border border-slate-800 p-5 rounded-xl space-y-2">
+                    <p class="text-xs text-slate-400">दैनिक रूटीन निरंतरता</p>
+                    <h3 id="streak-routine" class="text-3xl font-extrabold text-amber-400">0 Days</h3>
+                    <p class="text-[11px] text-slate-500">7:00 AM Routine Discipline</p>
+                </div>
+                <div class="bg-slate-900 border border-slate-800 p-5 rounded-xl space-y-2">
+                    <p class="text-xs text-slate-400">Insta Posting Streak</p>
+                    <h3 id="streak-insta" class="text-3xl font-extrabold text-insta-500">0 Days</h3>
+                    <p class="text-[11px] text-slate-500">कंसिस्टेंट कंटेंट शेयरिंग</p>
+                </div>
+                <div class="bg-slate-900 border border-slate-800 p-5 rounded-xl space-y-2">
+                    <p class="text-xs text-slate-400">To-Do Completion Score</p>
+                    <h3 id="streak-todo" class="text-3xl font-extrabold text-emerald-400">0%</h3>
+                    <p class="text-[11px] text-slate-500">औसत कार्य निष्पादन</p>
+                </div>
+                <div class="bg-slate-900 border border-slate-800 p-5 rounded-xl space-y-2">
+                    <p class="text-xs text-slate-400">डेवलपमेंट प्रोजेक्ट्स गति</p>
+                    <h3 id="streak-dev" class="text-3xl font-extrabold text-sky-400">100%</h3>
+                    <p class="text-[11px] text-slate-500">समय पर डिलीवरी</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- EXISTING SECTIONS (365 Plan, Customers, Leads, Projects, Finance, Settings) -->
+        <section id="tab-plan365" class="tab-content hidden space-y-6">
+            <!-- ... existing 365 plan content ... -->
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div>
+                    <h2 class="text-2xl font-bold text-white">365-Day Business Plan & Roadmap</h2>
+                    <p class="text-slate-400 text-sm">पूरे साल के लक्ष्यों को क्वार्टर, महीने और दिन के हिसाब से ट्रैक करें</p>
+                </div>
+                <button onclick="openModal('plan-modal')" class="bg-brand-600 hover:bg-brand-500 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2">
+                    <i data-lucide="plus" class="w-4 h-4"></i> नया लक्ष्य जोड़ें
+                </button>
+            </div>
+            <div id="plan-tasks-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+        </section>
+
+        <section id="tab-customers" class="tab-content hidden space-y-6">
+            <!-- ... existing customers content ... -->
+            <div class="flex justify-between items-center">
+                <h2 class="text-2xl font-bold text-white">ग्राहक प्रबंधन (Customer Directory)</h2>
+                <button onclick="openCustomerModal()" class="bg-brand-600 text-white px-4 py-2 rounded-lg text-sm font-medium">
+                    + नया ग्राहक
+                </button>
+            </div>
+            <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
+                <table class="w-full text-left text-sm text-slate-300">
+                    <thead class="bg-slate-800 text-xs uppercase text-slate-400">
+                        <tr><th class="p-4">नाम</th><th class="p-4">फ़ोन</th><th class="p-4">ईमेल</th><th class="p-4">श्रेणी</th><th class="p-4 text-right">कार्रवाई</th></tr>
+                    </thead>
+                    <tbody id="customers-table-body" class="divide-y divide-slate-800"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="tab-leads" class="tab-content hidden space-y-6">
+            <!-- ... existing leads content ... -->
+            <div class="flex justify-between items-center">
+                <h2 class="text-2xl font-bold text-white">लीड्स एवं पाइपलाइन (Leads Pipeline)</h2>
+                <button onclick="openLeadModal()" class="bg-brand-600 text-white px-4 py-2 rounded-lg text-sm font-medium">+ नई लीड</button>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl"><h3 class="font-bold text-sky-400 mb-3">नई लीड</h3><div id="lead-col-new" class="space-y-3"></div></div>
+                <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl"><h3 class="font-bold text-amber-400 mb-3">संपर्क किया</h3><div id="lead-col-contacted" class="space-y-3"></div></div>
+                <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl"><h3 class="font-bold text-purple-400 mb-3">बातचीत जारी</h3><div id="lead-col-negotiation" class="space-y-3"></div></div>
+                <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl"><h3 class="font-bold text-emerald-400 mb-3">कन्फर्म (Won)</h3><div id="lead-col-won" class="space-y-3"></div></div>
+            </div>
+        </section>
+
+        <section id="tab-projects" class="tab-content hidden space-y-6">
+            <!-- ... existing projects content ... -->
+            <div class="flex justify-between items-center">
+                <h2 class="text-2xl font-bold text-white">PF सेवाएं व डेवलपमेंट प्रोजेक्ट्स</h2>
+                <button onclick="openProjectModal()" class="bg-brand-600 text-white px-4 py-2 rounded-lg text-sm font-medium">+ नया प्रोजेक्ट</button>
+            </div>
+            <div id="projects-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+        </section>
+
+        <section id="tab-finance" class="tab-content hidden space-y-6">
+            <!-- ... existing finance content ... -->
+            <div class="flex justify-between items-center">
+                <h2 class="text-2xl font-bold text-white">फाइनेंस प्रबंधन (Finance & Profit Tracker)</h2>
+                <div class="flex gap-2">
+                    <button onclick="openFinanceModal('income')" class="bg-emerald-600 text-white px-3 py-2 rounded-lg text-sm">+ आय</button>
+                    <button onclick="openFinanceModal('expense')" class="bg-rose-600 text-white px-3 py-2 rounded-lg text-sm">- खर्चा</button>
+                </div>
+            </div>
+            <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
+                <table class="w-full text-left text-sm text-slate-300">
+                    <thead class="bg-slate-800 text-xs uppercase text-slate-400">
+                        <tr><th class="p-4">दिनांक</th><th class="p-4">प्रकार</th><th class="p-4">विवरण</th><th class="p-4">राशि</th><th class="p-4 text-right">कार्रवाई</th></tr>
+                    </thead>
+                    <tbody id="finance-table-body" class="divide-y divide-slate-800"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="tab-settings" class="tab-content hidden space-y-6">
+            <!-- ... existing settings content ... -->
+            <div>
+                <h2 class="text-2xl font-bold text-white">डेटा बैकअप एवं सेटिंग्स</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-slate-900 border border-slate-800 p-6 rounded-xl space-y-3">
+                    <h3 class="font-bold text-white">बैकअप डाउनलोड (Export)</h3>
+                    <button onclick="exportDataJSON()" class="bg-brand-600 text-white px-4 py-2 rounded-lg text-sm">Download Backup JSON</button>
+                </div>
+                <div class="bg-slate-900 border border-slate-800 p-6 rounded-xl space-y-3">
+                    <h3 class="font-bold text-white">बैकअप रीस्टोर (Import)</h3>
+                    <input type="file" id="import-file-input" accept=".json" class="hidden" onchange="importDataJSON(event)">
+                    <button onclick="document.getElementById('import-file-input').click()" class="bg-slate-800 text-white px-4 py-2 rounded-lg text-sm">Choose JSON File</button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- NEW MODALS -->
+
+    <!-- Timetable Slot Modal -->
+    <div id="modal-timetable-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-800 rounded-xl max-w-md w-full p-6 space-y-4">
+            <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                <h3 class="font-bold text-white text-lg">टाइमटेबल स्लॉट जोड़ें/संपादित करें</h3>
+                <button onclick="closeModal('timetable-modal')" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <form id="form-timetable" onsubmit="saveTimetableSlot(event)" class="space-y-4">
+                <input type="hidden" id="tt-id">
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1">समय (Time Slot)</label>
+                        <input type="text" id="tt-time" placeholder="07:00 AM - 08:00 AM" required class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2.5 text-white text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1">श्रेणी (Category)</label>
+                        <select id="tt-category" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2.5 text-white text-sm">
+                            <option value="Personal">Personal</option>
+                            <option value="Family">Family</option>
+                            <option value="Baby Care">Baby Care</option>
+                            <option value="Household Work">Household Work</option>
+                            <option value="Business">Business</option>
+                            <option value="Marketing">Marketing</option>
+                            <option value="Development">Development</option>
+                            <option value="Self-Care">Self-Care</option>
+                            <option value="Rest">Rest</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs text-slate-400 mb-1">गतिविधि का नाम (Activity Title)</label>
+                    <input type="text" id="tt-title" required class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2.5 text-white text-sm">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1">प्राथमिकता (Priority)</label>
+                        <select id="tt-priority" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2.5 text-white text-sm">
+                            <option value="High">High</option>
+                            <option value="Medium">Medium</option>
+                            <option value="Low">Low</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1">नोट्स</label>
+                        <input type="text" id="tt-notes" placeholder="Flexible schedule..." class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2.5 text-white text-sm">
+                    </div>
+                </div>
+                <button type="submit" class="w-full bg-brand-600 text-white font-medium py-2.5 rounded-lg">स्लॉट सहेजें</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Interactive To-Do Modal -->
+    <div id="modal-todo-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-800 rounded-xl max-w-lg w-full p-6 space-y-4">
+            <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                <h3 class="font-bold text-white text-lg">नया कार्य (To-Do Task) जोड़ें</h3>
+                <button onclick="closeModal('todo-modal')" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <form id="form-todo" onsubmit="saveTodoTask(event)" class="space-y-4">
+                <input type="hidden" id="todo-id">
+                <div>
+                    <label class="block text-xs text-slate-400 mb-1">टास्क शीर्षक (Task Title)</label>
+                    <input type="text" id="todo-title" required class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2.5 text-white text-sm">
+                </div>
+                <div class="grid grid-cols-3 gap-3">
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1">दिनांक (Date)</label>
+                        <input type="date" id="todo-date" required class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-xs">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1">स्टार्ट टाइम</label>
+                        <input type="time" id="todo-start-time" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-xs">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1">एंड टाइम</label>
+                        <input type="time" id="todo-end-time" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-xs">
+                    </div>
+                </div>
+                <div class="grid grid-cols-3 gap-3">
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1">कैटेगिरी</label>
+                        <select id="todo-category" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-xs">
+                            <option value="PF Service">PF Service</option>
+                            <option value="Web/App Dev">Web/App Dev</option>
+                            <option value="Marketing">Marketing</option>
+                            <option value="Instagram">Instagram</option>
+                            <option value="Customer Followup">Customer Followup</option>
+                            <option value="Personal">Personal</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1">प्राथमिकता</label>
+                        <select id="todo-priority" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-xs">
+                            <option value="High">High</option>
+                            <option value="Medium">Medium</option>
+                            <option value="Low">Low</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1">स्टेटस</label>
+                        <select id="todo-status" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-xs">
+                            <option value="Pending">Pending</option>
+                            <option value="In Progress">In Progress</option>
+                            <option value="Completed">Completed</option>
+                            <option value="Rescheduled">Rescheduled</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs text-slate-400 mb-1">विवरण / नोट्स</label>
+                    <textarea id="todo-notes" rows="2" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-xs"></textarea>
+                </div>
+                <button type="submit" class="w-full bg-brand-600 text-white font-medium py-2.5 rounded-lg">टास्क सहेजें</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Instagram Insight Entry Modal -->
+    <div id="modal-insta-log-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-800 rounded-xl max-w-lg w-full p-6 space-y-4">
+            <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                <h3 class="font-bold text-white text-lg">Instagram Actual Insights लॉग करें</h3>
+                <button onclick="closeModal('insta-log-modal')" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <form id="form-insta-log" onsubmit="saveInstaLog(event)" class="space-y-3 text-xs">
+                <div class="grid grid-cols-2 gap-3">
+                    <div><label class="text-slate-400">दिनांक</label><input type="date" id="ig-log-date" required class="w-full bg-slate-800 border border-slate-700 p-2 rounded text-white"></div>
+                    <div><label class="text-slate-400">वर्तमान फॉलोअर्स</label><input type="number" id="ig-log-followers" required class="w-full bg-slate-800 border border-slate-700 p-2 rounded text-white"></div>
+                </div>
+                <div class="grid grid-cols-3 gap-3">
+                    <div><label class="text-slate-400">नए फॉलोअर्स</label><input type="number" id="ig-log-new-followers" value="0" class="w-full bg-slate-800 border border-slate-700 p-2 rounded text-white"></div>
+                    <div><label class="text-slate-400">अनफॉलोअर्स</label><input type="number" id="ig-log-unfollowers" value="0" class="w-full bg-slate-800 border border-slate-700 p-2 rounded text-white"></div>
+                    <div><label class="text-slate-400">Total Reach</label><input type="number" id="ig-log-reach" value="0" class="w-full bg-slate-800 border border-slate-700 p-2 rounded text-white"></div>
+                </div>
+                <div class="grid grid-cols-3 gap-3">
+                    <div><label class="text-slate-400">Profile Visits</label><input type="number" id="ig-log-profile-visits" value="0" class="w-full bg-slate-800 border border-slate-700 p-2 rounded text-white"></div>
+                    <div><label class="text-slate-400">Reel Views</label><input type="number" id="ig-log-reel-views" value="0" class="w-full bg-slate-800 border border-slate-700 p-2 rounded text-white"></div>
+                    <div><label class="text-slate-400">Likes & Comments</label><input type="number" id="ig-log-likes" value="0" class="w-full bg-slate-800 border border-slate-700 p-2 rounded text-white"></div>
+                </div>
+                <div class="grid grid-cols-3 gap-3">
+                    <div><label class="text-slate-400">Shares & Saves</label><input type="number" id="ig-log-saves" value="0" class="w-full bg-slate-800 border border-slate-700 p-2 rounded text-white"></div>
+                    <div><label class="text-slate-400">WhatsApp Clicks</label><input type="number" id="ig-log-wa" value="0" class="w-full bg-slate-800 border border-slate-700 p-2 rounded text-white"></div>
+                    <div><label class="text-slate-400">Conversions</label><input type="number" id="ig-log-conversions" value="0" class="w-full bg-slate-800 border border-slate-700 p-2 rounded text-white"></div>
+                </div>
+                <button type="submit" class="w-full bg-insta-600 text-white font-medium py-2.5 rounded-lg mt-2">Insights रिकॉर्ड करें</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Instagram Content Post Script Modal -->
+    <div id="modal-insta-post-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-800 rounded-xl max-w-lg w-full p-6 space-y-4">
+            <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                <h3 class="font-bold text-white text-lg">इंस्टाग्राम पोस्ट/स्क्रिप्ट सहेजें</h3>
+                <button onclick="closeModal('insta-post-modal')" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <form id="form-insta-post" onsubmit="saveInstaPost(event)" class="space-y-3 text-xs">
+                <input type="hidden" id="ig-post-id">
+                <div><label class="text-slate-400">विषय (Topic)</label><input type="text" id="ig-post-topic" required class="w-full bg-slate-800 border border-slate-700 p-2 rounded text-white"></div>
+                <div class="grid grid-cols-3 gap-3">
+                    <div>
+                        <label class="text-slate-400">कैटेगिरी</label>
+                        <select id="ig-post-category" class="w-full bg-slate-800 border border-slate-700 p-2 rounded text-white">
+                            <option value="PF Services">PF Services</option>
+                            <option value="Website Development">Website Development</option>
+                            <option value="App Development">App Development</option>
+                            <option value="Logo Design">Logo Design</option>
+                            <option value="Poster Design">Poster Design</option>
+                            <option value="Video Editing">Video Editing</option>
+                            <option value="AI Tools">AI Tools</option>
+                            <option value="Business Tips">Business Tips</option>
+                            <option value="Technology Education">Technology Education</option>
+                            <option value="Portfolio Showcase">Portfolio Showcase</option>
+                            <option value="Customer Testimonials">Customer Testimonials</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="text-slate-400">फॉर्मेट</label>
+                        <select id="ig-post-type" class="w-full bg-slate-800 border border-slate-700 p-2 rounded text-white">
+                            <option value="Reel">Reel</option>
+                            <option value="Carousel">Carousel</option>
+                            <option value="Single Post">Single Post</option>
+                            <option value="Story">Story</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="text-slate-400">पब्लिश तिथि</label>
+                        <input type="date" id="ig-post-date" required class="w-full bg-slate-800 border border-slate-700 p-2 rounded text-white">
+                    </div>
+                </div>
+                <div><label class="text-slate-400">हुक (Hook Line)</label><input type="text" id="ig-post-hook" placeholder="3 सेकंड में अटेंशन खींचने वाली लाइन..." class="w-full bg-slate-800 border border-slate-700 p-2 rounded text-white"></div>
+                <div><label class="text-slate-400">पूरी स्क्रिप्ट (Full Script)</label><textarea id="ig-post-script" rows="3" class="w-full bg-slate-800 border border-slate-700 p-2 rounded text-white"></textarea></div>
+                <div><label class="text-slate-400">कैप्शन & हैशटैग्स</label><textarea id="ig-post-caption" rows="2" class="w-full bg-slate-800 border border-slate-700 p-2 rounded text-white"></textarea></div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div><label class="text-slate-400">Call-To-Action (CTA)</label><input type="text" id="ig-post-cta" placeholder="DM 'PF' for Help..." class="w-full bg-slate-800 border border-slate-700 p-2 rounded text-white"></div>
+                    <div>
+                        <label class="text-slate-400">स्टेटस</label>
+                        <select id="ig-post-status" class="w-full bg-slate-800 border border-slate-700 p-2 rounded text-white">
+                            <option value="Planned">Planned</option>
+                            <option value="Recorded">Recorded</option>
+                            <option value="Published">Published</option>
+                        </select>
+                    </div>
+                </div>
+                <button type="submit" class="w-full bg-insta-600 text-white font-medium py-2.5 rounded-lg mt-2">कंटेंट पोस्ट सहेजें</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Quick Action Modal (Updated) -->
+    <div id="modal-quick-entry-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-800 rounded-xl max-w-md w-full p-6 space-y-4">
+            <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                <h3 class="font-bold text-white text-lg">त्वरित एंट्री (Quick Action)</h3>
+                <button onclick="closeModal('quick-entry-modal')" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+                <button onclick="closeModal('quick-entry-modal'); openTodoModal();" class="p-3.5 bg-slate-800 hover:bg-slate-700 rounded-xl text-left space-y-1">
+                    <i data-lucide="check-square" class="w-5 h-5 text-emerald-400"></i>
+                    <p class="font-bold text-white text-xs">नया To-Do</p>
+                </button>
+                <button onclick="closeModal('quick-entry-modal'); openInstaLogModal();" class="p-3.5 bg-slate-800 hover:bg-slate-700 rounded-xl text-left space-y-1">
+                    <i data-lucide="instagram" class="w-5 h-5 text-insta-500"></i>
+                    <p class="font-bold text-white text-xs">Insta Insights</p>
+                </button>
+                <button onclick="closeModal('quick-entry-modal'); openProjectModal();" class="p-3.5 bg-slate-800 hover:bg-slate-700 rounded-xl text-left space-y-1">
+                    <i data-lucide="briefcase" class="w-5 h-5 text-blue-400"></i>
+                    <p class="font-bold text-white text-xs">प्रोजेक्ट / PF</p>
+                </button>
+                <button onclick="closeModal('quick-entry-modal'); openFinanceModal('income');" class="p-3.5 bg-slate-800 hover:bg-slate-700 rounded-xl text-left space-y-1">
+                    <i data-lucide="arrow-down-left" class="w-5 h-5 text-brand-400"></i>
+                    <p class="font-bold text-white text-xs">+ आय (Income)</p>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // Extended Database Structure with Timetable, To-Dos, Insta Growth Logs, and Content Calendar
+        const DEFAULT_DATA = {
+            timetable: [
+                { id: 'tt1', time: '07:00 AM - 08:00 AM', title: 'Wakeup & Personal Routine', category: 'Personal', priority: 'High', notes: 'Wakeup around 7:00 AM', completed: true },
+                { id: 'tt2', time: '08:00 AM - 10:00 AM', title: 'Household Responsibilities & Food Prep', category: 'Household Work', priority: 'High', notes: 'Family & Baby Care priorities', completed: true },
+                { id: 'tt3', time: '10:00 AM - 01:00 PM', title: 'Main Business Work & Customer PF Claims', category: 'Business', priority: 'High', notes: 'Core client focus time', completed: false },
+                { id: 'tt4', time: '01:00 PM - 02:00 PM', title: 'Lunch & Family Rest', category: 'Rest', priority: 'Medium', notes: 'Recharge time', completed: false },
+                { id: 'tt5', time: '02:00 PM - 05:00 PM', title: 'Software & App Development / Editing', category: 'Development', priority: 'High', notes: 'Coding & Studio tasks', completed: false },
+                { id: 'tt6', time: '05:00 PM - 06:30 PM', title: 'Instagram Reel Recording & Marketing', category: 'Marketing', priority: 'High', notes: 'Content creation', completed: false }
+            ],
+            todos: [
+                { id: 'td1', title: 'Submit Ramesh Kumar PF Form 31', date: new Date().toISOString().split('T')[0], startTime: '10:30', endTime: '11:30', category: 'PF Service', priority: 'High', status: 'Pending', notes: 'Check UAN credentials' },
+                { id: 'td2', title: 'Record Insta Reel on AI Tools for Editing', date: new Date().toISOString().split('T')[0], startTime: '17:00', endTime: '18:00', category: 'Instagram', priority: 'High', status: 'Pending', notes: 'Use trending audio' },
+                { id: 'td3', title: 'Deliver Website Design Mockup to Priya', date: new Date().toISOString().split('T')[0], startTime: '15:00', endTime: '16:30', category: 'Web/App Dev', priority: 'Medium', status: 'In Progress', notes: 'Send Figma preview link' }
+            ],
+            instaLogs: [
+                { id: 'ig1', date: '2026-10-28', followers: 1250, newFollowers: 12, unfollowers: 2, reach: 4500, profileVisits: 320, reelViews: 6800, likes: 410, saves: 85, storyViews: 310, waClicks: 14, conversions: 3 },
+                { id: 'ig2', date: '2026-10-29', followers: 1268, newFollowers: 20, unfollowers: 2, reach: 5200, profileVisits: 390, reelViews: 8100, likes: 530, saves: 110, storyViews: 380, waClicks: 18, conversions: 4 }
+            ],
+            instaContent: [
+                { id: 'ic1', topic: 'How to Withdraw PF Advance in 3 Days', category: 'PF Services', type: 'Reel', date: new Date().toISOString().split('T')[0], hook: 'क्या आपका PF क्लेम रिजेक्ट हो रहा है?', script: '1. Login to EPFO Portal...\n2. Select Form 31...', caption: 'PF क्लेम हेल्प के लिए डायरेक्ट DM करें! #PF #EPFO #SakshiStudio', cta: 'DM "PF Help"', status: 'Planned' },
+                { id: 'ic2', topic: 'Top 3 AI Tools for Free Logo Design', category: 'AI Tools', type: 'Carousel', date: '2026-11-01', hook: '5 सेकंड में प्रोफेशनल लोगो बनाएं', script: 'Slide 1: Intro\nSlide 2: Tool A\nSlide 3: Tool B', caption: 'Save this post for later! #AITools #LogoDesign', cta: 'Save & Share', status: 'Planned' }
+            ],
+            planTasks: [
+                { id: '1', title: 'PF सर्विस का विज्ञापन शुरू करें', quarter: 'Q1', date: '2026-01-15', desc: 'लोकल मार्केट में 1000 पम्फलेट बांटें', completed: true },
+                { id: '2', title: 'नया HD कैमरा खरीदें', quarter: 'Q2', date: '2026-04-10', desc: 'फोटो/वीडियो शूटिंग की क्षमता बढ़ाने हेतु', completed: false }
+            ],
+            customers: [
+                { id: 'c1', name: 'रमेश कुमार', phone: '9876543210', email: 'ramesh@gmail.com', type: 'PF Client' },
+                { id: 'c2', name: 'प्रिया शर्मा', phone: '9123456789', email: 'priya@gmail.com', type: 'Studio Client' }
+            ],
+            leads: [
+                { id: 'l1', name: 'अमित वर्मा', phone: '9988776655', value: 1500, status: 'new', notes: 'PF Advance Withdrawal Enquiry' }
+            ],
+            projects: [
+                { id: 'p1', title: 'PF Form 31 Claim', category: 'PF Service', customerId: 'c1', cost: 1200, advance: 500, deadline: '2026-11-05', status: 'In Progress' }
+            ],
+            finance: [
+                { id: 'f1', type: 'income', desc: 'PF Claim Advance Fee', category: 'Service Fee', amount: 500, date: '2026-10-28' }
+            ]
+        };
+
+        // App Global State
+        let store = JSON.parse(localStorage.getItem('sakshi_studio_db')) || DEFAULT_DATA;
+        let activeTodoFilter = 'today';
+        let activeContentCat = 'all';
+        let instaGrowthChart = null;
+
+        function saveStore() {
+            localStorage.setItem('sakshi_studio_db', JSON.stringify(store));
+            renderDashboard();
+        }
+
+        function showToast(msg, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            const colorClass = type === 'success' ? 'bg-brand-600' : 'bg-rose-600';
+            toast.className = `${colorClass} text-white px-4 py-3 rounded-lg shadow-xl text-sm flex items-center justify-between gap-3 transform transition-all duration-300 translate-y-2 opacity-0`;
+            toast.innerHTML = `<span>${msg}</span><button onclick="this.parentElement.remove()">&times;</button>`;
+            container.appendChild(toast);
+            setTimeout(() => toast.classList.remove('translate-y-2', 'opacity-0'), 10);
+            setTimeout(() => toast.remove(), 3500);
+        }
+
+        // Tab Switcher
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('bg-brand-600', 'text-white'));
+
+            const activeTab = document.getElementById(`tab-${tabId}`);
+            if (activeTab) activeTab.classList.remove('hidden');
+
+            const activeBtn = document.querySelector(`.nav-btn[data-tab="${tabId}"]`);
+            if (activeBtn) activeBtn.classList.add('bg-brand-600', 'text-white');
+
+            closeMobileSidebar();
+
+            if (tabId === 'dashboard') renderDashboard();
+            if (tabId === 'timetable') renderTimetable();
+            if (tabId === 'todo') renderTodo();
+            if (tabId === 'insta-growth') renderInstaGrowth();
+            if (tabId === 'insta-calendar') renderInstaCalendar();
+            if (tabId === 'customers') renderCustomers();
+            if (tabId === 'leads') renderLeads();
+            if (tabId === 'projects') renderProjects();
+            if (tabId === 'finance') renderFinance();
+            if (tabId === 'plan365') render365Plan();
+            if (tabId === 'tracker') renderTracker();
+        }
+
+        // UNIFIED DASHBOARD RENDERER
+        function renderDashboard() {
+            const todayStr = new Date().toISOString().split('T')[0];
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('dash-today-date').innerText = new Date().toLocaleDateString('hi-IN', options);
+
+            // To-Do Stats
+            const todayTodos = store.todos.filter(t => t.date === todayStr);
+            const completedTodos = todayTodos.filter(t => t.status === 'Completed').length;
+            const todoPercent = todayTodos.length ? Math.round((completedTodos / todayTodos.length) * 100) : 0;
+            document.getElementById('dash-todo-percent').innerText = `${todoPercent}%`;
+            document.getElementById('dash-todo-counts').innerText = `${completedTodos}/${todayTodos.length} पूर्ण`;
+            document.getElementById('dash-todo-bar').style.width = `${todoPercent}%`;
+
+            // Timetable Stats
+            const completedRoutine = store.timetable.filter(tt => tt.completed).length;
+            const routinePercent = store.timetable.length ? Math.round((completedRoutine / store.timetable.length) * 100) : 0;
+            document.getElementById('dash-routine-percent').innerText = `${routinePercent}%`;
+            document.getElementById('dash-routine-counts').innerText = `${completedRoutine}/${store.timetable.length} पूर्ण`;
+            document.getElementById('dash-routine-bar').style.width = `${routinePercent}%`;
+
+            // Insta Quick Stats
+            const latestLog = store.instaLogs.length ? store.instaLogs[store.instaLogs.length - 1] : { followers: 0, reach: 0 };
+            document.getElementById('dash-insta-followers').innerText = latestLog.followers.toLocaleString('en-IN');
+            document.getElementById('dash-insta-reach').innerText = `+${latestLog.reach} Reach`;
+
+            // Revenue Stats
+            const totalIncome = store.finance.filter(f => f.type === 'income').reduce((s, f) => s + Number(f.amount), 0);
+            const totalExpense = store.finance.filter(f => f.type === 'expense').reduce((s, f) => s + Number(f.amount), 0);
+            document.getElementById('dash-revenue').innerText = `₹${totalIncome.toLocaleString('en-IN')}`;
+            document.getElementById('dash-net-profit').innerText = `Net: ₹${(totalIncome - totalExpense).toLocaleString('en-IN')}`;
+            document.getElementById('dash-active-projects').innerText = store.projects.filter(p => p.status !== 'Completed').length;
+
+            // Render Top 3 High Priority Tasks
+            const topPriorities = store.todos.filter(t => t.priority === 'High' && t.status !== 'Completed').slice(0, 3);
+            document.getElementById('dash-top-priorities-list').innerHTML = topPriorities.map(t => `
+                <div class="flex justify-between items-center bg-slate-800/80 p-3 rounded-lg text-xs">
+                    <div class="flex items-center gap-2">
+                        <input type="checkbox" ${t.status === 'Completed' ? 'checked' : ''} onclick="toggleTodoStatus('${t.id}')" class="rounded text-brand-500">
+                        <span class="font-medium text-white">${t.title}</span>
+                    </div>
+                    <span class="px-2 py-0.5 rounded bg-rose-500/10 text-rose-400 font-bold text-[10px]">High</span>
+                </div>
+            `).join('') || '<p class="text-xs text-slate-500">कोई प्राथमिकता कार्य लंबित नहीं है</p>';
+
+            // Timetable List Render
+            document.getElementById('dash-timetable-list').innerHTML = store.timetable.map(tt => `
+                <div class="flex justify-between items-center bg-slate-800/40 p-2.5 rounded-lg text-xs">
+                    <div>
+                        <p class="font-semibold text-white">${tt.title}</p>
+                        <p class="text-[10px] text-slate-400">${tt.time} • ${tt.category}</p>
+                    </div>
+                    <input type="checkbox" ${tt.completed ? 'checked' : ''} onclick="toggleTimetableComplete('${tt.id}')" class="rounded text-amber-500">
+                </div>
+            `).join('');
+
+            // Today's Insta Content Render
+            const todayInsta = store.instaContent.find(c => c.date === todayStr) || store.instaContent[0];
+            document.getElementById('dash-today-insta-content').innerHTML = todayInsta ? `
+                <div class="flex justify-between items-start">
+                    <span class="bg-insta-600/20 text-insta-400 px-2 py-0.5 rounded font-bold">${todayInsta.type} • ${todayInsta.category}</span>
+                    <span class="text-slate-400 text-[10px]">${todayInsta.status}</span>
+                </div>
+                <p class="font-bold text-white text-xs mt-1">Hook: "${todayInsta.hook}"</p>
+                <p class="text-slate-400 text-[11px] truncate">CTA: ${todayInsta.cta}</p>
+            ` : '<p class="text-slate-500">आज के लिए कोई सोशल मीडिया पोस्ट शेड्यूल नहीं है</p>';
+
+            // Followups List
+            const activeLeads = store.leads.filter(l => l.status !== 'won').slice(0, 3);
+            document.getElementById('dash-followups-list').innerHTML = activeLeads.map(l => `
+                <div class="bg-slate-800/50 p-2 rounded text-xs flex justify-between items-center">
+                    <div>
+                        <p class="font-bold text-white">${l.name}</p>
+                        <p class="text-[10px] text-slate-400">📞 ${l.phone}</p>
+                    </div>
+                    <span class="text-[10px] bg-slate-700 px-2 py-0.5 rounded text-amber-300">${l.status}</span>
+                </div>
+            `).join('') || '<p class="text-xs text-slate-500">कोई फॉलोअप नहीं</p>';
+
+            // Categorized Tasks Counts
+            document.getElementById('dash-pf-list').innerHTML = store.todos.filter(t => t.category === 'PF Service').slice(0, 2).map(t => `<p class="p-2 bg-slate-800 rounded text-slate-300">${t.title}</p>`).join('') || '<p class="text-slate-500">कोई PF टास्क नहीं</p>';
+            document.getElementById('dash-dev-list').innerHTML = store.todos.filter(t => t.category === 'Web/App Dev').slice(0, 2).map(t => `<p class="p-2 bg-slate-800 rounded text-slate-300">${t.title}</p>`).join('') || '<p class="text-slate-500">कोई देव प्रोजेक्ट नहीं</p>';
+            document.getElementById('dash-mkt-list').innerHTML = store.todos.filter(t => t.category === 'Marketing' || t.category === 'Instagram').slice(0, 2).map(t => `<p class="p-2 bg-slate-800 rounded text-slate-300">${t.title}</p>`).join('') || '<p class="text-slate-500">कोई मार्केटिंग नहीं</p>';
+            
+            document.getElementById('dash-pf-count').innerText = store.todos.filter(t => t.category === 'PF Service').length;
+            document.getElementById('dash-dev-count').innerText = store.todos.filter(t => t.category === 'Web/App Dev').length;
+            document.getElementById('dash-mkt-count').innerText = store.todos.filter(t => t.category === 'Marketing' || t.category === 'Instagram').length;
+
+            lucide.createIcons();
+        }
+
+        // TIMETABLE LOGIC
+        function renderTimetable() {
+            const tbody = document.getElementById('timetable-table-body');
+            tbody.innerHTML = store.timetable.map(tt => `
+                <tr class="hover:bg-slate-800/50 transition">
+                    <td class="p-4 font-bold text-amber-400 text-xs">${tt.time}</td>
+                    <td class="p-4 font-medium text-white">${tt.title}</td>
+                    <td class="p-4"><span class="px-2.5 py-1 text-xs rounded-full bg-slate-800 border border-slate-700 text-slate-300">${tt.category}</span></td>
+                    <td class="p-4"><span class="px-2 py-0.5 text-xs font-bold rounded ${tt.priority === 'High' ? 'bg-rose-500/10 text-rose-400' : 'bg-slate-800 text-slate-400'}">${tt.priority}</span></td>
+                    <td class="p-4 text-xs text-slate-400">${tt.notes || '-'}</td>
+                    <td class="p-4 text-center">
+                        <input type="checkbox" ${tt.completed ? 'checked' : ''} onclick="toggleTimetableComplete('${tt.id}')" class="w-4 h-4 rounded text-brand-500">
+                    </td>
+                    <td class="p-4 text-right">
+                        <button onclick="deleteTimetableSlot('${tt.id}')" class="text-slate-500 hover:text-rose-400"><i data-lucide="trash-2" class="w-4 h-4 inline"></i></button>
+                    </td>
+                </tr>
+            `).join('') || '<tr><td colspan="7" class="p-4 text-center text-slate-500">कोई टाइमटेबल नहीं है</td></tr>';
+            lucide.createIcons();
+        }
+
+        function openTimetableModal() {
+            document.getElementById('form-timetable').reset();
+            document.getElementById('tt-id').value = '';
+            openModal('timetable-modal');
+        }
+
+        function saveTimetableSlot(e) {
+            e.preventDefault();
+            const id = document.getElementById('tt-id').value || 'tt_' + Date.now();
+            const slot = {
+                id,
+                time: document.getElementById('tt-time').value,
+                category: document.getElementById('tt-category').value,
+                title: document.getElementById('tt-title').value,
+                priority: document.getElementById('tt-priority').value,
+                notes: document.getElementById('tt-notes').value,
+                completed: false
+            };
+            store.timetable.push(slot);
+            saveStore();
+            closeModal('timetable-modal');
+            renderTimetable();
+            showToast('टाइम स्लॉट सहेजा गया');
+        }
+
+        function toggleTimetableComplete(id) {
+            const slot = store.timetable.find(tt => tt.id === id);
+            if (slot) {
+                slot.completed = !slot.completed;
+                saveStore();
+                renderTimetable();
+            }
+        }
+
+        function deleteTimetableSlot(id) {
+            store.timetable = store.timetable.filter(tt => tt.id !== id);
+            saveStore();
+            renderTimetable();
+            showToast('स्लॉट हटाया गया', 'error');
+        }
+
+        // INTERACTIVE TO-DO LOGIC
+        function renderTodo() {
+            const grid = document.getElementById('todo-cards-grid');
+            const todayStr = new Date().toISOString().split('T')[0];
+            let filtered = store.todos;
+
+            if (activeTodoFilter === 'today') filtered = filtered.filter(t => t.date === todayStr);
+            if (activeTodoFilter === 'pending') filtered = filtered.filter(t => t.status === 'Pending' || t.status === 'In Progress');
+            if (activeTodoFilter === 'overdue') filtered = filtered.filter(t => t.date < todayStr && t.status !== 'Completed');
+            if (activeTodoFilter === 'tomorrow') {
+                const tomorrow = new Date(); tomorrow.setDate(tomorrow.getDate() + 1);
+                filtered = filtered.filter(t => t.date === tomorrow.toISOString().split('T')[0]);
+            }
+            if (activeTodoFilter === 'completed') filtered = filtered.filter(t => t.status === 'Completed');
+
+            grid.innerHTML = filtered.map(t => `
+                <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 space-y-3 relative">
+                    <div class="flex justify-between items-start">
+                        <span class="text-[11px] font-bold px-2.5 py-0.5 rounded bg-slate-800 text-brand-400">${t.category}</span>
+                        <span class="text-[10px] font-bold px-2 py-0.5 rounded ${t.priority === 'High' ? 'bg-rose-500/10 text-rose-400' : 'bg-slate-800 text-slate-400'}">${t.priority}</span>
+                    </div>
+                    <h3 class="font-bold text-white text-sm ${t.status === 'Completed' ? 'line-through text-slate-500' : ''}">${t.title}</h3>
+                    <p class="text-xs text-slate-400">${t.notes || 'कोई अतिरिक्त नोट्स नहीं'}</p>
+                    <div class="flex justify-between items-center pt-2 border-t border-slate-800 text-xs">
+                        <span class="text-slate-500">${t.date} ${t.startTime ? '• ' + t.startTime : ''}</span>
+                        <div class="flex items-center gap-2">
+                            <select onchange="updateTodoStatus('${t.id}', this.value)" class="bg-slate-800 border border-slate-700 text-slate-300 text-xs rounded px-2 py-1">
+                                <option value="Pending" ${t.status==='Pending'?'selected':''}>Pending</option>
+                                <option value="In Progress" ${t.status==='In Progress'?'selected':''}>In Progress</option>
+                                <option value="Completed" ${t.status==='Completed'?'selected':''}>Completed</option>
+                                <option value="Rescheduled" ${t.status==='Rescheduled'?'selected':''}>Rescheduled</option>
+                            </select>
+                            <button onclick="deleteTodoTask('${t.id}')" class="text-slate-500 hover:text-rose-400"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                        </div>
+                    </div>
+                </div>
+            `).join('') || '<p class="col-span-full text-slate-500 text-center py-8">कोई कार्य नहीं मिला</p>';
+            lucide.createIcons();
+        }
+
+        function filterTodo(f) {
+            activeTodoFilter = f;
+            document.querySelectorAll('.todo-filter-btn').forEach(b => {
+                b.classList.remove('bg-brand-600', 'text-white');
+                b.classList.add('bg-slate-800', 'text-slate-300');
+            });
+            event.target.classList.add('bg-brand-600', 'text-white');
+            renderTodo();
+        }
+
+        function openTodoModal() {
+            document.getElementById('form-todo').reset();
+            document.getElementById('todo-id').value = '';
+            document.getElementById('todo-date').value = new Date().toISOString().split('T')[0];
+            openModal('todo-modal');
+        }
+
+        function saveTodoTask(e) {
+            e.preventDefault();
+            const id = document.getElementById('todo-id').value || 'td_' + Date.now();
+            const task = {
+                id,
+                title: document.getElementById('todo-title').value,
+                date: document.getElementById('todo-date').value,
+                startTime: document.getElementById('todo-start-time').value,
+                endTime: document.getElementById('todo-end-time').value,
+                category: document.getElementById('todo-category').value,
+                priority: document.getElementById('todo-priority').value,
+                status: document.getElementById('todo-status').value,
+                notes: document.getElementById('todo-notes').value
+            };
+            store.todos.push(task);
+            saveStore();
+            closeModal('todo-modal');
+            renderTodo();
+            showToast('टास्क सहेजा गया');
+        }
+
+        function updateTodoStatus(id, newStatus) {
+            const task = store.todos.find(t => t.id === id);
+            if (task) {
+                task.status = newStatus;
+                saveStore();
+                renderTodo();
+            }
+        }
+
+        function toggleTodoStatus(id) {
+            const task = store.todos.find(t => t.id === id);
+            if (task) {
+                task.status = task.status === 'Completed' ? 'Pending' : 'Completed';
+                saveStore();
+            }
+        }
+
+        function deleteTodoTask(id) {
+            store.todos = store.todos.filter(t => t.id !== id);
+            saveStore();
+            renderTodo();
+            showToast('टास्क डिलीट किया गया', 'error');
+        }
+
+        // INSTAGRAM GROWTH LOGIC
+        function renderInstaGrowth() {
+            const historyContainer = document.getElementById('insta-log-history');
+            const latest = store.instaLogs[store.instaLogs.length - 1] || { followers: 0, reach: 0, reelViews: 0, waClicks: 0, conversions: 0, profileVisits: 0, likes: 0, saves: 0, storyViews: 0 };
+
+            document.getElementById('ig-followers').innerText = latest.followers.toLocaleString('en-IN');
+            document.getElementById('ig-reach').innerText = latest.reach.toLocaleString('en-IN');
+            document.getElementById('ig-reel-views').innerText = latest.reelViews.toLocaleString('en-IN');
+            document.getElementById('ig-wa-clicks').innerText = latest.waClicks;
+            document.getElementById('ig-conversions').innerText = latest.conversions;
+            document.getElementById('ig-profile-visits').innerText = latest.profileVisits;
+            document.getElementById('ig-engagement').innerText = latest.likes;
+            document.getElementById('ig-saves-shares').innerText = latest.saves;
+            document.getElementById('ig-story-views').innerText = latest.storyViews;
+
+            historyContainer.innerHTML = store.instaLogs.slice().reverse().map(l => `
+                <div class="bg-slate-800/60 p-3 rounded-lg border border-slate-800 space-y-1">
+                    <div class="flex justify-between font-bold text-white">
+                        <span>${l.date}</span>
+                        <span class="text-insta-400">${l.followers} Followers</span>
+                    </div>
+                    <p class="text-slate-400 text-[10px]">Reach: ${l.reach} • Reel Views: ${l.reelViews} • WA Clicks: ${l.waClicks}</p>
+                </div>
+            `).join('') || '<p class="text-slate-500">कोई डेटा नहीं</p>';
+
+            // Render Chart
+            const ctx = document.getElementById('chart-insta-growth').getContext('2d');
+            if (instaGrowthChart) instaGrowthChart.destroy();
+            instaGrowthChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: store.instaLogs.map(l => l.date),
+                    datasets: [
+                        { label: 'Followers', data: store.instaLogs.map(l => l.followers), borderColor: '#e1306c', tension: 0.3 },
+                        { label: 'Reach', data: store.instaLogs.map(l => l.reach), borderColor: '#38bdf8', tension: 0.3 }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { labels: { color: '#94a3b8' } } },
+                    scales: {
+                        y: { ticks: { color: '#94a3b8' }, grid: { color: '#334155' } },
+                        x: { ticks: { color: '#94a3b8' }, grid: { display: false } }
+                    }
+                }
+            });
+        }
+
+        function openInstaLogModal() {
+            document.getElementById('form-insta-log').reset();
+            document.getElementById('ig-log-date').value = new Date().toISOString().split('T')[0];
+            openModal('insta-log-modal');
+        }
+
+        function saveInstaLog(e) {
+            e.preventDefault();
+            const log = {
+                id: 'ig_' + Date.now(),
+                date: document.getElementById('ig-log-date').value,
+                followers: Number(document.getElementById('ig-log-followers').value),
+                newFollowers: Number(document.getElementById('ig-log-new-followers').value),
+                unfollowers: Number(document.getElementById('ig-log-unfollowers').value),
+                reach: Number(document.getElementById('ig-log-reach').value),
+                profileVisits: Number(document.getElementById('ig-log-profile-visits').value),
+                reelViews: Number(document.getElementById('ig-log-reel-views').value),
+                likes: Number(document.getElementById('ig-log-likes').value),
+                saves: Number(document.getElementById('ig-log-saves').value),
+                storyViews: Number(document.getElementById('ig-log-saves').value),
+                waClicks: Number(document.getElementById('ig-log-wa').value),
+                conversions: Number(document.getElementById('ig-log-conversions').value)
+            };
+            store.instaLogs.push(log);
+            saveStore();
+            closeModal('insta-log-modal');
+            renderInstaGrowth();
+            showToast('Instagram Insights लॉग हो गए');
+        }
+
+        // INSTAGRAM CONTENT CALENDAR LOGIC
+        function renderInstaCalendar() {
+            const grid = document.getElementById('insta-content-cards-grid');
+            let filtered = store.instaContent;
+            if (activeContentCat !== 'all') filtered = filtered.filter(c => c.category === activeContentCat);
+
+            grid.innerHTML = filtered.map(c => `
+                <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-3 relative">
+                    <div class="flex justify-between items-start">
+                        <span class="text-xs px-2.5 py-1 rounded bg-purple-500/10 text-purple-400 font-bold">${c.category}</span>
+                        <span class="text-xs font-bold px-2 py-0.5 rounded bg-slate-800 text-slate-300">${c.type} • ${c.status}</span>
+                    </div>
+                    <h3 class="font-bold text-white text-base">${c.topic}</h3>
+                    <div class="bg-slate-950 p-3 rounded-lg text-xs space-y-2 border border-slate-800">
+                        <p class="text-amber-300 font-semibold">🎣 Hook: "${c.hook}"</p>
+                        <p class="text-slate-300">📜 Script: ${c.script}</p>
+                        <p class="text-brand-400">📲 CTA: ${c.cta}</p>
+                    </div>
+                    <div class="flex justify-between items-center text-xs pt-1">
+                        <span class="text-slate-500">शेड्यूल तिथि: ${c.date}</span>
+                        <button onclick="deleteInstaPost('${c.id}')" class="text-slate-500 hover:text-rose-400"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                    </div>
+                </div>
+            `).join('') || '<p class="col-span-full text-slate-500 text-center py-8">कोई कंटेंट पोस्ट नहीं मिली</p>';
+            lucide.createIcons();
+        }
+
+        function filterContentCat(cat) {
+            activeContentCat = cat;
+            document.querySelectorAll('.content-cat-btn').forEach(b => {
+                b.classList.remove('bg-brand-600', 'text-white');
+                b.classList.add('bg-slate-800', 'text-slate-300');
+            });
+            event.target.classList.add('bg-brand-600', 'text-white');
+            renderInstaCalendar();
+        }
+
+        function openContentPostModal() {
+            document.getElementById('form-insta-post').reset();
+            document.getElementById('ig-post-id').value = '';
+            document.getElementById('ig-post-date').value = new Date().toISOString().split('T')[0];
+            openModal('insta-post-modal');
+        }
+
+        function saveInstaPost(e) {
+            e.preventDefault();
+            const post = {
+                id: 'ic_' + Date.now(),
+                topic: document.getElementById('ig-post-topic').value,
+                category: document.getElementById('ig-post-category').value,
+                type: document.getElementById('ig-post-type').value,
+                date: document.getElementById('ig-post-date').value,
+                hook: document.getElementById('ig-post-hook').value,
+                script: document.getElementById('ig-post-script').value,
+                caption: document.getElementById('ig-post-caption').value,
+                cta: document.getElementById('ig-post-cta').value,
+                status: document.getElementById('ig-post-status').value
+            };
+            store.instaContent.push(post);
+            saveStore();
+            closeModal('insta-post-modal');
+            renderInstaCalendar();
+            showToast('कंटेंट पोस्ट सहेजी गई');
+        }
+
+        function deleteInstaPost(id) {
+            store.instaContent = store.instaContent.filter(c => c.id !== id);
+            saveStore();
+            renderInstaCalendar();
+            showToast('पोस्ट हटाई गई', 'error');
+        }
+
+        function toggleEngageCheck(el) {
+            if (el.checked) showToast('Daily engagement point completed!');
+        }
+
+        // TRACKER RENDERER
+        function renderTracker() {
+            const completedRoutine = store.timetable.filter(tt => tt.completed).length;
+            const routineStreak = store.timetable.length ? Math.round((completedRoutine / store.timetable.length) * 100) : 0;
+            document.getElementById('streak-routine').innerText = `${routineStreak}% Done`;
+
+            const instaPosts = store.instaContent.filter(c => c.status === 'Published').length;
+            document.getElementById('streak-insta').innerText = `${instaPosts} Posts`;
+
+            const completedTodos = store.todos.filter(t => t.status === 'Completed').length;
+            const todoPercent = store.todos.length ? Math.round((completedTodos / store.todos.length) * 100) : 0;
+            document.getElementById('streak-todo').innerText = `${todoPercent}%`;
+        }
+
+        // EXISTING FEATURES IMPLEMENTATIONS
+        function renderCustomers() {
+            const tbody = document.getElementById('customers-table-body');
+            tbody.innerHTML = store.customers.map(c => `
+                <tr class="hover:bg-slate-800/50">
+                    <td class="p-4 font-medium text-white">${c.name}</td>
+                    <td class="p-4 text-slate-300">${c.phone}</td>
+                    <td class="p-4 text-slate-400">${c.email || '-'}</td>
+                    <td class="p-4"><span class="px-2 py-1 text-xs rounded bg-slate-800 text-brand-400">${c.type}</span></td>
+                    <td class="p-4 text-right">
+                        <button onclick="deleteCustomer('${c.id}')" class="text-slate-500 hover:text-rose-400"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                    </td>
+                </tr>
+            `).join('') || '<tr><td colspan="5" class="p-4 text-center text-slate-500">कोई ग्राहक नहीं</td></tr>';
+            lucide.createIcons();
+        }
+
+        function openCustomerModal() {
+            const name = prompt('ग्राहक का नाम:');
+            const phone = prompt('फ़ोन नंबर:');
+            if (name && phone) {
+                store.customers.push({ id: 'c_' + Date.now(), name, phone, type: 'Regular' });
+                saveStore();
+                renderCustomers();
+            }
+        }
+
+        function deleteCustomer(id) {
+            store.customers = store.customers.filter(c => c.id !== id);
+            saveStore();
+            renderCustomers();
+        }
+
+        function renderLeads() {
+            ['new', 'contacted', 'negotiation', 'won'].forEach(col => {
+                const container = document.getElementById(`lead-col-${col}`);
+                const filtered = store.leads.filter(l => l.status === col);
+                container.innerHTML = filtered.map(l => `
+                    <div class="bg-slate-800 p-3 rounded-lg text-xs space-y-1">
+                        <p class="font-bold text-white">${l.name}</p>
+                        <p class="text-slate-400">📞 ${l.phone}</p>
+                    </div>
+                `).join('') || '<p class="text-slate-600 text-xs">खाली है</p>';
+            });
+        }
+
+        function openLeadModal() {
+            const name = prompt('लीड का नाम:');
+            const phone = prompt('फ़ोन नंबर:');
+            if (name && phone) {
+                store.leads.push({ id: 'l_' + Date.now(), name, phone, value: 1000, status: 'new' });
+                saveStore();
+                renderLeads();
+            }
+        }
+
+        function renderProjects() {
+            const grid = document.getElementById('projects-grid');
+            grid.innerHTML = store.projects.map(p => `
+                <div class="bg-slate-900 border border-slate-800 p-5 rounded-xl space-y-2">
+                    <span class="text-xs bg-slate-800 text-teal-400 px-2 py-0.5 rounded">${p.category}</span>
+                    <h3 class="font-bold text-white text-sm">${p.title}</h3>
+                    <p class="text-xs text-slate-400">शुल्क: ₹${p.cost} | एडवांस: ₹${p.advance}</p>
+                </div>
+            `).join('');
+        }
+
+        function openProjectModal() {
+            const title = prompt('प्रोजेक्ट या PF कार्य का नाम:');
+            if (title) {
+                store.projects.push({ id: 'p_' + Date.now(), title, category: 'PF Service', cost: 1000, advance: 500, deadline: new Date().toISOString().split('T')[0], status: 'In Progress' });
+                saveStore();
+                renderProjects();
+            }
+        }
+
+        function renderFinance() {
+            const tbody = document.getElementById('finance-table-body');
+            tbody.innerHTML = store.finance.map(f => `
+                <tr class="hover:bg-slate-800/50">
+                    <td class="p-4 text-xs text-slate-400">${f.date}</td>
+                    <td class="p-4"><span class="px-2 py-0.5 text-xs rounded font-bold ${f.type === 'income' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-rose-500/10 text-rose-400'}">${f.type}</span></td>
+                    <td class="p-4 font-medium text-white">${f.desc}</td>
+                    <td class="p-4 font-bold text-white">₹${f.amount}</td>
+                    <td class="p-4 text-right"><button onclick="deleteFinance('${f.id}')" class="text-slate-500 hover:text-rose-400"><i data-lucide="trash-2" class="w-4 h-4"></i></button></td>
+                </tr>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        function openFinanceModal(type) {
+            const desc = prompt('विवरण:');
+            const amount = prompt('राशि (₹):');
+            if (desc && amount) {
+                store.finance.push({ id: 'f_' + Date.now(), type, desc, amount: Number(amount), date: new Date().toISOString().split('T')[0] });
+                saveStore();
+                renderFinance();
+            }
+        }
+
+        function deleteFinance(id) {
+            store.finance = store.finance.filter(f => f.id !== id);
+            saveStore();
+            renderFinance();
+        }
+
+        function render365Plan() {
+            const grid = document.getElementById('plan-tasks-grid');
+            grid.innerHTML = store.planTasks.map(t => `
+                <div class="bg-slate-900 border border-slate-800 p-5 rounded-xl space-y-2">
+                    <span class="text-xs bg-brand-500/10 text-brand-400 px-2 py-0.5 rounded font-bold">${t.quarter}</span>
+                    <h3 class="font-bold text-white text-sm">${t.title}</h3>
+                    <p class="text-xs text-slate-400">${t.desc}</p>
+                </div>
+            `).join('');
+        }
+
+        // UTILITY FUNCTIONS & BACKUP
+        function openModal(id) { document.getElementById(`modal-${id}`).classList.remove('hidden'); }
+        function closeModal(id) { document.getElementById(`modal-${id}`).classList.add('hidden'); }
+
+        function exportDataJSON() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(store, null, 2));
+            const a = document.createElement('a');
+            a.setAttribute("href", dataStr);
+            a.setAttribute("download", `sakshi_studio_full_backup_${new Date().toISOString().split('T')[0]}.json`);
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            showToast('पूरा बैकअप डाउनलोड हो गया');
+        }
+
+        function importDataJSON(e) {
+            const reader = new FileReader();
+            reader.onload = function (event) {
+                try {
+                    store = JSON.parse(event.target.result);
+                    saveStore();
+                    showToast('डेटा रीस्टोर हो गया!');
+                    setTimeout(() => location.reload(), 800);
+                } catch (err) {
+                    showToast('अमान्य फाइल', 'error');
+                }
+            };
+            reader.readAsText(e.target.files[0]);
+        }
+
+        // Mobile Menu Navigation Controls
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const sidebar = document.getElementById('sidebar');
+        const sidebarOverlay = document.getElementById('sidebar-overlay');
+
+        function openMobileSidebar() {
+            sidebar.classList.remove('-translate-x-full');
+            sidebarOverlay.classList.remove('hidden');
+        }
+
+        function closeMobileSidebar() {
+            sidebar.classList.add('-translate-x-full');
+            sidebarOverlay.classList.add('hidden');
+        }
+
+        mobileMenuBtn.addEventListener('click', openMobileSidebar);
+        sidebarOverlay.addEventListener('click', closeMobileSidebar);
+
+        // App Initializer
+        window.onload = function () {
+            lucide.createIcons();
+            switchTab('dashboard');
+        };
+    </script>
+</body>
+</html>
